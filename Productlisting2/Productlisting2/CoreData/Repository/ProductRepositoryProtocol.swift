@@ -2,12 +2,11 @@ import Foundation
 import Combine
 
 protocol ProductRepositoryProtocol {
-func fetchProducts() -> AnyPublisher<[Product], Error>
-func fetchProductDetail(id: Int) -> AnyPublisher<Product, Error>
-func fetchCategories() -> AnyPublisher<[String], Error>
+    func fetchProducts() -> AnyPublisher<[Product], NetworkError>
+    func fetchProductDetail(id: Int) -> AnyPublisher<Product, NetworkError>
+    func fetchCategories() -> AnyPublisher<[String], NetworkError>
+    func fetchFavoriteProducts() -> AnyPublisher<[Product], NetworkError>
 
-func fetchFavoriteProducts() -> AnyPublisher<[Product], Error>
-
-func isFavorite(productId: Int) -> Bool
-func toggleFavorite(product: Product)
+    func isFavorite(productId: Int) -> Bool
+    func toggleFavorite(product: Product)
 }

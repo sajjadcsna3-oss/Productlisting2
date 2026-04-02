@@ -12,5 +12,5 @@ import Foundation
 import Combine
 
 protocol NetworkService {
-func request<T: Decodable>(endpoint: APIEndpoint) -> AnyPublisher<T, Error>
+    func request<T: Codable>(endpoint: APIEndpoint) -> AnyPublisher<T, NetworkError>
 }

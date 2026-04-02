@@ -5,8 +5,8 @@
 import SwiftUI
 
 struct FilterMenuView: View {
-    let options: [ProductListViewModel.FilterOption]
-    @Binding var selectedFilter: ProductListViewModel.FilterOption
+    let options: [FilterOption]
+    @Binding var selectedFilter: FilterOption
 
     var body: some View {
         Menu {

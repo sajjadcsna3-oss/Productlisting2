@@ -2,12 +2,11 @@ import SwiftUI
 
 struct ProductDetailView: View {
     @Environment(\.dismiss) private var dismiss
+    @EnvironmentObject private var router: Router
     @StateObject private var viewModel: ProductDetailViewModel
 
     let productID: Int
     private let repository: ProductRepositoryProtocol
-
-    @State private var goToFavorites = false
 
     init(productID: Int, repository: ProductRepositoryProtocol) {
         self.productID = productID
@@ -96,7 +95,7 @@ struct ProductDetailView: View {
 
                         if !wasFavorite {
                             DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-                                goToFavorites = true
+                                router.push(.favorites)
                             }
                         }
                     } label: {
@@ -111,14 +110,6 @@ struct ProductDetailView: View {
                         .clipShape(RoundedRectangle(cornerRadius: 14))
                     }
                     .padding(.top, 10)
-
-                    NavigationLink(
-                        destination: FavoritesView(repository: repository),
-                        isActive: $goToFavorites
-                    ) {
-                        EmptyView()
-                    }
-                    .hidden()
                 }
                 .padding()
             }

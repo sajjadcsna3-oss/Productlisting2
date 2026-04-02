@@ -1,51 +1,42 @@
-//
-// SplashView.swift
-// ShopApp
-//
-// Created by Mac Mini on 26/03/2026.
-//
 import SwiftUI
-
+import Combine
 struct SplashView: View {
-@StateObject private var viewModel = SplashViewModel()
-private let repository: ProductRepositoryProtocol
+    @StateObject private var viewModel = SplashViewModel()
+    @EnvironmentObject private var router: Router
 
-init(repository: ProductRepositoryProtocol) {
-    self.repository = repository
-}
+    private let repository: ProductRepositoryProtocol
 
-var body: some View {
-    ZStack {
-        LinearGradient(
-            colors: [Color.blue.opacity(0.85), Color.purple.opacity(0.85)],
-            startPoint: .topLeading,
-            endPoint: .bottomTrailing
-        )
-        .ignoresSafeArea()
+    init(repository: ProductRepositoryProtocol) {
+        self.repository = repository
+    }
 
-        VStack(spacing: 16) {
-            Image(systemName: "bag.fill")
-                .font(.system(size: 72))
-                .foregroundColor(.white)
+    var body: some View {
+        ZStack {
+            LinearGradient(
+                colors: [Color.blue.opacity(0.85), Color.purple.opacity(0.85)],
+                startPoint: .topLeading,
+                endPoint: .bottomTrailing
+            )
+            .ignoresSafeArea()
 
-            Text("ShopEase")
-                .font(.system(size: 34, weight: .bold))
-                .foregroundColor(.white)
+            VStack(spacing: 16) {
+                Image(systemName: "bag.fill")
+                    .font(.system(size: 72))
+                    .foregroundColor(.white)
 
-            ProgressView()
-                .tint(.white)
-                .padding(.top, 10)
+                Text("ShopEase")
+                    .font(.system(size: 34, weight: .bold))
+                    .foregroundColor(.white)
+
+                ProgressView()
+                    .tint(.white)
+                    .padding(.top, 10)
+            }
+        }
+        .onAppear {
+            viewModel.start {
+                router.push(.productList)
+            }
         }
     }
-    .onAppear {
-        viewModel.start()
-    }
-    .navigationDestination(isPresented: $viewModel.shouldNavigate) {
-        ProductListView(
-            viewModel: ProductListViewModel(repository: repository),
-            repository: repository
-        )
-        .navigationBarBackButtonHidden(true)
-    }
-}
 }
