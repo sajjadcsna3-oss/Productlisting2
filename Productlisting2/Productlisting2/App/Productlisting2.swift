@@ -1,5 +1,6 @@
 import SwiftUI
 import CoreData
+
 @main
 struct Productlisting2: App {
     let persistenceController = PersistenceController.shared
@@ -19,16 +20,10 @@ struct Productlisting2: App {
                     .navigationDestination(for: AppRoute.self) { route in
                         switch route {
                         case .productList:
-                            ProductListView(
-                                viewModel: ProductListViewModel(repository: repository),
-                                repository: repository
-                            )
+                            ProductListView(repository: repository)
 
                         case .productDetail(let id):
-                            ProductDetailView(
-                                productID: id,
-                                repository: repository
-                            )
+                            ProductDetailView(productID: id, repository: repository)
 
                         case .favorites:
                             FavoritesView(repository: repository)

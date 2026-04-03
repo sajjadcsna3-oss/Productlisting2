@@ -4,10 +4,7 @@ struct FavoritesView: View {
     @StateObject private var viewModel: FavoritesViewModel
     @EnvironmentObject private var router: Router
 
-    private let repository: ProductRepositoryProtocol
-
     init(repository: ProductRepositoryProtocol) {
-        self.repository = repository
         _viewModel = StateObject(wrappedValue: FavoritesViewModel(repository: repository))
     }
 
@@ -22,25 +19,25 @@ struct FavoritesView: View {
                 ScrollView {
                     LazyVStack(spacing: 14) {
                         ForEach(viewModel.favoriteProducts) { product in
-                            Button {
+                            ProductRowView(
+                                product: product,
+                                isFavorite: true,
+                                favoriteTapped: {
+                                    viewModel.toggleFavorite(product: product)
+                                }
+                            )
+                            .contentShape(Rectangle())
+                            .onTapGesture {
                                 router.push(.productDetail(id: product.id))
-                            } label: {
-                                ProductRowView(
-                                    product: product,
-                                    isFavorite: true,
-                                    favoriteTapped: {
-                                        viewModel.toggleFavorite(product: product)
-                                    }
-                                )
                             }
-                            .buttonStyle(.plain)
                         }
                     }
                     .padding()
                 }
             }
         }
-        .navigationBarBackButtonHidden(true)
+        .navigationTitle("Favorites")
+        .navigationBarTitleDisplayMode(.inline)
         .onAppear {
             viewModel.loadFavorites()
         }

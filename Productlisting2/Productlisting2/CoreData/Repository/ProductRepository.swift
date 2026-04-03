@@ -14,9 +14,10 @@ final class ProductRepository: ProductRepositoryProtocol {
 
     func fetchProducts() -> AnyPublisher<[Product], NetworkError> {
         networkService.request(endpoint: ProductEndpoint.products)
-            .map { [weak self] products in
-                guard let self = self else { return products }
-                return products.map { product in
+            .map { [weak self] (response: ProductListResponse) in
+                guard let self = self else { return response.products }
+
+                return response.products.map { product in
                     var updated = product
                     updated.isFavorite = self.isFavorite(productId: product.id)
                     return updated
@@ -27,8 +28,9 @@ final class ProductRepository: ProductRepositoryProtocol {
 
     func fetchProductDetail(id: Int) -> AnyPublisher<Product, NetworkError> {
         networkService.request(endpoint: ProductEndpoint.productDetail(id: id))
-            .map { [weak self] product in
+            .map { [weak self] (product: Product) in
                 guard let self = self else { return product }
+
                 var updated = product
                 updated.isFavorite = self.isFavorite(productId: product.id)
                 return updated

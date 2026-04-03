@@ -1,8 +1,3 @@
-// ProductRowView.swift
-// ShopApp
-//
-// Created by Mac Mini on 26/03/2026.
-//
 import SwiftUI
 
 struct ProductRowView: View {
@@ -12,7 +7,7 @@ struct ProductRowView: View {
 
     var body: some View {
         HStack(spacing: 12) {
-            AsyncImage(url: URL(string: product.image)) { phase in
+            AsyncImage(url: URL(string: product.thumbnail)) { phase in
                 switch phase {
                 case .empty:
                     ProgressView()
@@ -45,6 +40,10 @@ struct ProductRowView: View {
                 Text("$\(product.price, specifier: "%.2f")")
                     .font(.subheadline)
                     .fontWeight(.semibold)
+
+                Text(product.category.capitalized)
+                    .font(.caption)
+                    .foregroundColor(.secondary)
             }
 
             Spacer()

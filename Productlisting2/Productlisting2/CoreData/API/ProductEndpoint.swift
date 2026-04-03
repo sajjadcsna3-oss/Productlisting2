@@ -1,7 +1,3 @@
-//
-//  ProductEndpoint.swift
-//  ShopApp
-//
 import Foundation
 
 enum ProductEndpoint: APIEndpoint {
@@ -16,7 +12,7 @@ enum ProductEndpoint: APIEndpoint {
         case .productDetail(let id):
             return "/products/\(id)"
         case .categories:
-            return "/products/categories"
+            return "/products/category-list"
         }
     }
 

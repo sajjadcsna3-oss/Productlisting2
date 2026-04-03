@@ -114,7 +114,9 @@ final class ProductListViewModel: ObservableObject {
         case .all:
             break
         case .category(let category):
-            result = result.filter { $0.category.lowercased() == category.lowercased() }
+            result = result.filter {
+                $0.category.lowercased() == category.lowercased()
+            }
         case .priceLowToHigh:
             result = result.sorted { $0.price < $1.price }
         case .priceHighToLow:

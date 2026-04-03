@@ -1,20 +1,11 @@
-//
-// ProductListView.swift
-// ShopApp
-//
-// Created by Mac Mini on 26/03/2026.
-//
 import SwiftUI
 
 struct ProductListView: View {
     @StateObject private var viewModel: ProductListViewModel
     @EnvironmentObject private var router: Router
 
-    private let repository: ProductRepositoryProtocol
-
-    init(viewModel: ProductListViewModel, repository: ProductRepositoryProtocol) {
-        _viewModel = StateObject(wrappedValue: viewModel)
-        self.repository = repository
+    init(repository: ProductRepositoryProtocol) {
+        _viewModel = StateObject(wrappedValue: ProductListViewModel(repository: repository))
     }
 
     var body: some View {
@@ -69,7 +60,8 @@ struct ProductListView: View {
             Spacer()
             ProgressView("Loading products...")
             Spacer()
-        } else if let errorMessage = viewModel.errorMessage, viewModel.displayedProducts.isEmpty {
+        } else if let errorMessage = viewModel.errorMessage,
+                  viewModel.displayedProducts.isEmpty {
             Spacer()
             VStack(spacing: 10) {
                 Text(errorMessage)
@@ -86,21 +78,20 @@ struct ProductListView: View {
             ScrollView {
                 LazyVStack(spacing: 14) {
                     ForEach(viewModel.displayedProducts) { product in
-                        Button {
-                            router.push(.productDetail(id: product.id))
-                        } label: {
-                            ProductRowView(
-                                product: product,
-                                isFavorite: viewModel.isFavorite(productId: product.id),
-                                favoriteTapped: {
-                                    viewModel.toggleFavorite(product: product)
-                                }
-                            )
-                            .onAppear {
-                                viewModel.loadMoreIfNeeded(currentItem: product)
+                        ProductRowView(
+                            product: product,
+                            isFavorite: viewModel.isFavorite(productId: product.id),
+                            favoriteTapped: {
+                                viewModel.toggleFavorite(product: product)
                             }
+                        )
+                        .contentShape(Rectangle())
+                        .onTapGesture {
+                            router.push(.productDetail(id: product.id))
                         }
-                        .buttonStyle(.plain)
+                        .onAppear {
+                            viewModel.loadMoreIfNeeded(currentItem: product)
+                        }
                     }
 
                     if viewModel.isLoadingMore {

@@ -1,14 +1,14 @@
-//
-// FavoriteProduct+CoreDataClass.swift
-// ShopApp
-//
-// Created by Mac Mini on 26/03/2026.
-//
+    //
+    // FavoriteProduct+CoreDataClass.swift
+    // ShopApp
+    //
+    // Created by Mac Mini on 26/03/2026.
+    //
 
-import Foundation
-import CoreData
+    import Foundation
+    import CoreData
 
-@objc(FavoriteProduct)
-public class FavoriteProduct: NSManagedObject {
+    @objc(FavoriteProduct)
+    public class FavoriteProduct: NSManagedObject {
 
-}
+    }
